@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список задач</title>
+</head>
+<body>
+    <h2>Список задач</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todos %}
+                <tr>
+                    <td>{{ todo.id }}</td>
+                    <td>{{ todo.title }}</td>
+                    <td>{{ todo.completed|yesno:"Выполнено,Не выполнено" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
