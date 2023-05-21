@@ -1,0 +1,13 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h1>Список мороженного</h1>
+
+<ul>
+    {% for icecream in ice_creams %}
+    <li>
+        <a href="{% url 'icecream_detail' icecream.id %}">{{ icecream.flavor }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

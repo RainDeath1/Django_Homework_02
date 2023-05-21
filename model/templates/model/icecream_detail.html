@@ -1,0 +1,13 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h1>{{ icecream.flavor }}</h1>
+
+<p>Manufacturer: {{ icecream.manufacturer }}</p>
+<p>Price: {{ icecream.price }}</p>
+<p>Calories: {{ icecream.calories }}</p>
+<p>Description: {{ icecream.description }}</p>
+
+<a href="{% url 'icecream_edit' ice_cream_id=icecream.id %}">Edit</a>
+
+{% endblock %}

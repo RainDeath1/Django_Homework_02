@@ -1,4 +1,13 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.db.models import Sum
+
+def validate_positive_number(value):
+    if value < 0:
+        raise ValidationError(
+            f'{value} Не может быть отрицательным числом',
+            params={'value': value},
+        )
 
 class Person(models.Model):
     first_name = models.CharField(max_length=100)
@@ -21,11 +30,17 @@ class IceCream(models.Model):
         ('MI', 'Mint'),
     ]
     flavor = models.CharField(max_length=2, choices=FLAVORS)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=5, decimal_places=2, validators=[validate_positive_number])
     manufacturer = models.CharField(max_length=100)
-    calories = models.IntegerField()
+    calories = models.IntegerField(validators=[validate_positive_number])
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='ice_creams/', blank=True, null=True)
+
+    def id_and_price(self):
+        return f"{self.id}: {self.price}"
+
+    def total_calories(self):
+        return IceCream.objects.filter(flavor=self.flavor).aggregate(Sum('calories'))['calories__sum']
 
 class IceCreamKiosk(models.Model):
     name = models.CharField(max_length=200)
