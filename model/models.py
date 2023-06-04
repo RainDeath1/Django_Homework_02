@@ -19,6 +19,9 @@ class Child(models.Model):
     first_name = models.CharField(max_length=100)
     date_of_birth = models.DateField()
 
+
+
+
 class IceCream(models.Model):
     FLAVORS = [
         ('CH', 'Chocolate'),
@@ -35,6 +38,7 @@ class IceCream(models.Model):
     calories = models.IntegerField(validators=[validate_positive_number])
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='ice_creams/', blank=True, null=True)
+    toppings = models.ManyToManyField('Topping')
 
     def id_and_price(self):
         return f"{self.id}: {self.price}"
@@ -46,3 +50,7 @@ class IceCreamKiosk(models.Model):
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     ice_creams = models.ManyToManyField(IceCream)
+
+class Topping(models.Model):
+    name = models.CharField(max_length=200)
+
