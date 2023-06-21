@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Детали задачи</title>
+</head>
+<body>
+    <h1>{{ task.title }}</h1>
+    <p><strong>Описание:</strong> {{ task.description }}</p>
+    <p><strong>Дата выполнения:</strong> {{ task.due_date }}</p>
+    <form method="POST" action="{% url 'tasks:task-delete' task.pk %}">
+        {% csrf_token %}
+        <input type="submit" value="Удалить">
+    </form>
+    <a href="{% url 'tasks:task-update' task.pk %}">Редактировать</a>
+    <a href="{% url 'tasks:task-list' %}">Вернуться к списку задач</a>
+</body>
+</html>
+

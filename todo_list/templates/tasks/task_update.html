@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редактирование задачи</title>
+</head>
+<body>
+    <h1>Редактирование задачи</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+    <a href="{% url 'tasks:task-detail' task.pk %}">Отменить</a>
+</body>
+</html>

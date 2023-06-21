@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список задач</title>
+</head>
+<body>
+    <h1>Список задач</h1>
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <strong><a href="{% url 'tasks:task-detail' task.pk %}">{{ task.title }}</a></strong> - {{ task.due_date }}
+            <br>
+            {{ task.description }}
+        </li>
+        {% empty %}
+        <li>Нет задач.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'tasks:task-create' %}">Создать новую задачу</a>
+</body>
+</html>
