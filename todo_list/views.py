@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView
-
+from django.http import JsonResponse
 from .models import Task
 from .forms import TaskForm
 from django.views import View
@@ -25,7 +25,7 @@ class TaskCreateView(CreateView):
             form.save()
             return redirect('tasks:task-list')
         else:
-            print(form.errors)  # добавьте эту строку
+            print(form.errors)
         return render(request, 'tasks/task_create.html', {'form': form})
 
 
@@ -55,3 +55,8 @@ class TaskDeleteView(DeleteView):
     model = Task
     template_name = 'tasks/task_delete.html'
     success_url = reverse_lazy('tasks:task-list')
+
+
+def comprehension(request):
+    data = [i for i in range(10)]
+    return JsonResponse({'data': data})
