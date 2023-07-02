@@ -5,12 +5,26 @@ from django.http import JsonResponse
 from .models import Task
 from .forms import TaskForm
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+import logging
+
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('request_data.log')
+handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+logger.addHandler(handler)
 
 
-class TaskListView(View):
-    def get(self, request):
+class TaskListView(LoginRequiredMixin, View):
+    login_url = '/login'
+
+    def get(self,request):
         tasks = Task.objects.all()
-        return render(request, 'tasks/task_list.html', {'tasks': tasks})
+        logger.info('GET request data: %s', request.GET)
+        return render(request, 'tasks/task_list.html', {'tasks':tasks})
 
 
 class TaskCreateView(CreateView):
@@ -60,3 +74,9 @@ class TaskDeleteView(DeleteView):
 def comprehension(request):
     data = [i for i in range(10)]
     return JsonResponse({'data': data})
+
+
+
+
+
+
