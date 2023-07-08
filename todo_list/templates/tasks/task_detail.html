@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Детали задачи</title>
-</head>
-<body>
-    <h1>{{ task.title }}</h1>
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Детали задачи
+{% endblock %}
+
+{% block h1 %}
+    {{ task.title }}
+{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">{{ task.title }}</h2>
     <p><strong>Описание:</strong> {{ task.description }}</p>
     <p><strong>Дата выполнения:</strong> {{ task.due_date }}</p>
-    <form method="POST" action="{% url 'tasks:task-delete' task.pk %}">
-        {% csrf_token %}
-        <input type="submit" value="Удалить">
-    </form>
-    <a href="{% url 'tasks:task-update' task.pk %}">Редактировать</a>
-    <a href="{% url 'tasks:task-list' %}">Вернуться к списку задач</a>
-</body>
-</html>
+    <div class="mb-3">
+        <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-primary me-2">Редактировать</a>
+        <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger">Удалить</a>
+    </div>
+    <a href="{% url 'tasks:task-list' %}" class="btn btn-secondary">Вернуться к списку задач</a>
+{% endblock %}
+
 
