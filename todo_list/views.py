@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DeleteView, ListView, DetailView
+from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from django.http import JsonResponse, HttpResponseRedirect
 from .models import Task
 from .forms import TaskForm
@@ -73,6 +73,14 @@ class TaskDetailView(View):
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         return render(request, 'tasks/task_detail.html', {'task': task})
+
+
+class TaskArchiveIndexView(ArchiveIndexView):
+    model = Task
+    date_field = "due_date"
+    template_name = "tasks/task_archive.html"
+    context_object_name = "tasks"
+    allow_future = True
 
 
 class TaskUpdateView(View):
