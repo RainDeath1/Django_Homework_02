@@ -16,7 +16,18 @@
         <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-primary me-2">Редактировать</a>
         <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger">Удалить</a>
     </div>
+
+{% if history %}
+    <h3>История изменений</h3>
+    <ul>
+        {% for change in history %}
+        {% ifchanged change.date %}
+            <li><strong>{{ change.date|date:"d M Y" }}</strong></li>
+        {% endifchanged %}
+        <li>{{ change.description }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
     <a href="{% url 'tasks:task-list' %}" class="btn btn-secondary">Вернуться к списку задач</a>
 {% endblock %}
-
-

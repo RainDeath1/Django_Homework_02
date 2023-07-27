@@ -72,7 +72,9 @@ class TaskDetailView(View):
 
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
-        return render(request, 'tasks/task_detail.html', {'task': task})
+        history = task.change_set.all()
+        print(history)
+        return render(request, 'tasks/task_detail.html', {'task': task, 'history': history})
 
 
 class TaskArchiveIndexView(ArchiveIndexView):

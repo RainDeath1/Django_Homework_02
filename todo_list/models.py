@@ -12,3 +12,9 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
+
+
+class Change(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    date = models.DateField()
+    description = models.TextField()
