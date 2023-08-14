@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
@@ -24,8 +25,13 @@ class TaskListView(LoginRequiredMixin, View):
 
     def get(self, request):
         tasks = Task.objects.all()
+        paginator = Paginator(tasks, 10)
+        page = request.GET.get('page')
+        task_on_page = paginator.get_page(page)
         logger.info('GET request data: %s', request.GET)
-        return render(request, 'tasks/task_list.html', {'tasks':tasks})
+        return render(request, 'tasks/task_list.html', {'tasks': task_on_page})
+        # logger.info('GET request data: %s', request.GET)
+        # return render(request, 'tasks/task_list.html', {'tasks': tasks})
 
 
 class TaskCreateView(CreateView):
