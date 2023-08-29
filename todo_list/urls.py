@@ -1,6 +1,8 @@
 from django.urls import path, re_path
+
+from . import views
 from .views import TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension, \
-    UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView
+    UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 
@@ -19,6 +21,7 @@ urlpatterns = [
     path('user/<int:user_id>/', UserDetailView.as_view(), name='user_detail'),
     path('user/redirect/', UserRedirectView.as_view(), name='user_redirect'),
     path('tasks/archive/', TaskArchiveIndexView.as_view(), name='task_archive'),
-
+    path('create_icecream/', views.create_icecream, name='create_icecream'),
+    path('icecream_list/', IceCreamListView.as_view(), name='tasks:icecream_list'),
 ]
 

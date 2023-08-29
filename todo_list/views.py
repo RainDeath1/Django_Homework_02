@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from django.http import JsonResponse, HttpResponseRedirect
-from .models import Task
-from .forms import TaskForm
+from .models import Task, IceCream
+from .forms import TaskForm, IceCreamForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -115,3 +115,20 @@ class TaskDeleteView(DeleteView):
 def comprehension(request):
     data = [i for i in range(10)]
     return JsonResponse({'data': data})
+
+
+def create_icecream(request):
+    if request.method == 'POST':
+        form = IceCreamForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('icecream_list')
+    else:
+        form = IceCreamForm()
+
+    return render(request, 'Icecream/create_icecream.html', {'form': form})
+
+
+class IceCreamListView(ListView):
+    model = IceCream
+    template_name = 'Icecream/icecream_list.html'

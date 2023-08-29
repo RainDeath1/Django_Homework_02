@@ -18,3 +18,13 @@ class Change(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     date = models.DateField()
     description = models.TextField()
+
+
+class IceCream(models.Model):
+    name = models.CharField(max_length=150, verbose_name='Название мороженного')
+    description = models.TextField(verbose_name='Описание')
+    price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Цена')
+    flavor = models.CharField(max_length=50, verbose_name='Вкус')
+
+    def __str__(self):
+        return self.name
