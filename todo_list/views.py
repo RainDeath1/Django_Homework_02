@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from django.http import JsonResponse, HttpResponseRedirect
 from .models import Task, IceCream
-from .forms import TaskForm, IceCreamForm, ProductForm
+from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -129,10 +129,10 @@ def create_icecream(request):
     return render(request, 'Icecream/create_icecream.html', {'form': form})
 
 
-
 class IceCreamListView(ListView):
     model = IceCream
     template_name = 'Icecream/icecream_list.html'
+
 
 #26
 def product_create_view(request):
@@ -157,3 +157,15 @@ def product_create_view(request):
     })
 
 
+#27 home_27
+def create_multiple_tasks(request):
+    formset = TaskFormSet(queryset=Task.objects.none())
+
+    if request.method == 'POST':
+        formset = TaskFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+            return redirect('tasks:task-list')
+
+    context = {'formset': formset}
+    return render(request, 'tasks/multiple_task_create.html', context)
