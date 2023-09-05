@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Task, IceCream
+from .models import Task, IceCream, Product
 
 
 # class TaskForm(forms.ModelForm):
@@ -40,3 +40,11 @@ class IceCreamForm(forms.ModelForm):
             'price': forms.NumberInput(attrs={'placeholder': 'Цена'}),
             'flavor': forms.TextInput(attrs={'placeholder': 'Вкус мороженного'}),
         }
+
+#26
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price']

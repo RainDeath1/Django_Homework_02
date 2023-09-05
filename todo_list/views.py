@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from django.http import JsonResponse, HttpResponseRedirect
 from .models import Task, IceCream
-from .forms import TaskForm, IceCreamForm
+from .forms import TaskForm, IceCreamForm, ProductForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -129,6 +129,31 @@ def create_icecream(request):
     return render(request, 'Icecream/create_icecream.html', {'form': form})
 
 
+# Данные не уходят, urls , template not found, хз
 class IceCreamListView(ListView):
     model = IceCream
     template_name = 'Icecream/icecream_list.html'
+
+#26
+def product_create_view(request):
+    success_message = None
+    error_message = None
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            success_message = 'Продукт успешно добавлен в каталог'
+            form = ProductForm()
+        else:
+            error_message = 'Что-то пошло не так. Пожалуйста, проверьте введенные данные'
+    else:
+        form = ProductForm()
+
+    return render(request, 'products/product_create.html', {
+        'form': form,
+        'success_message': success_message,
+        'error_message': error_message,
+    })
+
+

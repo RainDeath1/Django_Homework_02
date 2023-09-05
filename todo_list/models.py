@@ -28,3 +28,14 @@ class IceCream(models.Model):
 
     def __str__(self):
         return self.name
+
+# ДЗ №26
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=120, verbose_name= 'Название товара')
+    description = models.TextField(verbose_name='Описание товара')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+
+    def __str__(self):
+        return self.name
