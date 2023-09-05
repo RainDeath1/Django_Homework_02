@@ -129,7 +129,7 @@ def create_icecream(request):
     return render(request, 'Icecream/create_icecream.html', {'form': form})
 
 
-# Данные не уходят, urls , template not found, хз
+
 class IceCreamListView(ListView):
     model = IceCream
     template_name = 'Icecream/icecream_list.html'
