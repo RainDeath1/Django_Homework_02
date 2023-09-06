@@ -27,5 +27,7 @@ urlpatterns = [
     path('create_product/', product_create_view, name='products:create_product'),
     #27
     path('create_multiple_tasks/', views.create_multiple_tasks, name='create_multiple_tasks'),
+
+
 ]
 

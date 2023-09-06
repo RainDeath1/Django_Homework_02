@@ -9,6 +9,9 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 import logging
+from django.contrib.auth.signals import user_logged_in
+from django.dispatch import receiver
+
 
 logger = logging.getLogger(__name__)
 handler = logging.FileHandler('request_data.log')
@@ -18,6 +21,13 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 
 logger.addHandler(handler)
+
+#home_28
+
+
+@receiver(user_logged_in)
+def user_logged_in_handler(sender, request, user, **kwargs):
+    print(f'Пользователь {user.username} вошел в систему.')
 
 
 class TaskListView(LoginRequiredMixin, View):
