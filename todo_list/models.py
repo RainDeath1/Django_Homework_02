@@ -39,3 +39,21 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Song(models.Model):
+    title = models.CharField(max_length=250, verbose_name='Название')
+    artist = models.CharField(max_length=100, verbose_name='Исполнитель')
+
+
+    def __str__(self):
+        return self.title
+
+
+class Playlist(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Название')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+    songs = models.ManyToManyField(Song, related_name='playlist', verbose_name='Песни')
+
+    def __str__(self):
+        return self.name

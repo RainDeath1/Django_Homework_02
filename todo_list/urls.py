@@ -24,10 +24,13 @@ urlpatterns = [
     path('create_icecream/', views.create_icecream, name='create_icecream'),
     path('icecream_list/', IceCreamListView.as_view(), name='icecream_list'),
     #26
-    path('create_product/', product_create_view, name='products:create_product'),
+    path('create_product/', product_create_view, name='create_product'),
     #27
     path('create_multiple_tasks/', views.create_multiple_tasks, name='create_multiple_tasks'),
-
-
+    #29
+    path('playlist/', views.playlist_list, name='playlist_list'),
+    path('playlists/<int:pk>/', views.playlist_detail, name='playlist_detail'),
+    path('playlists/create/', views.playlist_create, name='playlist_create'),
+    path('songs/create/', views.song_create, name='song_create'),
 ]
 

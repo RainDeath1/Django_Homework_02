@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from django.http import JsonResponse, HttpResponseRedirect
-from .models import Task, IceCream
-from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet
+from .models import Task, IceCream, Playlist, Song
+from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -179,3 +179,36 @@ def create_multiple_tasks(request):
 
     context = {'formset': formset}
     return render(request, 'tasks/multiple_task_create.html', context)
+
+
+def playlist_list(request):
+    playlists = Playlist.objects.all()
+    print(playlists)
+    return render(request, 'playlist/playlist_list.html', {'playlists': playlists})
+
+
+def playlist_detail(request, pk):
+    playlist = Playlist.objects.get(pk=pk)
+    return render(request, 'playlist/playlist_detail.html', {'playlist': playlist})
+
+
+def playlist_create(request):
+    if request.method == 'POST':
+        form = PlaylistForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks:playlist_list')
+    else:
+        form = PlaylistForm()
+    return render(request, 'playlist/playlist_form.html', {'form': form})
+
+
+def song_create(request):
+    if request.method == 'POST':
+        form = SongForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks:playlist_list')
+    else:
+        form = SongForm
+    return render(request, 'playlist/song_form.html', {'form': form})
