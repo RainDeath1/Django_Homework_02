@@ -45,7 +45,6 @@ class Song(models.Model):
     title = models.CharField(max_length=250, verbose_name='Название')
     artist = models.CharField(max_length=100, verbose_name='Исполнитель')
 
-
     def __str__(self):
         return self.title
 
@@ -57,3 +56,21 @@ class Playlist(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class DiscountableProduct(Product):
+    discount_percent = models.PositiveSmallIntegerField(default=0, verbose_name="Процент скидки")
+
+    class Meta:
+        abstract = True
+
+    def discounted_price(self):
+        return self.price * (100 - self.discount_percent) / 100
+
+
+class PremiumProduct(DiscountableProduct):
+    is_limited_edition = models.BooleanField(default=False, verbose_name="Ограниченное издание")
+    premium_packaging = models.BooleanField(default=False, verbose_name="Премиальная упаковка")
+
+    def __str__(self):
+        return f"Премиум: {self.name}"
