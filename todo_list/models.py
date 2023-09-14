@@ -29,6 +29,20 @@ class IceCream(models.Model):
     def __str__(self):
         return self.name
 
+
+#31
+
+class ProductQuerySet(models.QuerySet):
+    def in_price_range(self, min_price, max_price):
+        return self.filter(price__gte=min_price, price__lte=max_price)
+
+
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return ProductQuerySet(self.model, using=self._db)
+
+    def in_price_range(self, min_price, max_price):
+        return self.get_queryset().in_price_range(min_price, max_price)
 # ДЗ №26
 
 
@@ -58,6 +72,7 @@ class Playlist(models.Model):
         return self.name
 
 
+#home_30
 class DiscountableProduct(Product):
     discount_percent = models.PositiveSmallIntegerField(default=0, verbose_name="Процент скидки")
 

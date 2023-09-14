@@ -32,5 +32,6 @@ urlpatterns = [
     path('playlists/<int:pk>/', views.playlist_detail, name='playlist_detail'),
     path('playlists/create/', views.playlist_create, name='playlist_create'),
     path('songs/create/', views.song_create, name='song_create'),
+    path('create_product/', views.create_product_and_playlist_view, name='create_product_and_playlist'),
 ]
 

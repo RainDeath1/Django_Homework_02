@@ -2,8 +2,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
-from django.http import JsonResponse, HttpResponseRedirect
-from .models import Task, IceCream, Playlist, Song
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from .models import Task, IceCream, Playlist, Song, Product
 from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 import logging
 from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
+from django.db import transaction
 
 
 logger = logging.getLogger(__name__)
@@ -212,3 +213,28 @@ def song_create(request):
     else:
         form = SongForm
     return render(request, 'playlist/song_form.html', {'form': form})
+
+
+def create_product_and_playlist(name, song_title, artist):
+    with transaction.atomic():
+        playlist = Playlist(name=name)
+        playlist.save()
+
+        song = Song(title=song_title, artist=artist)
+        song.save()
+
+        playlist.songs.add(song)
+
+        if Playlist.objects.filter(songs__title=song_title).exists():
+            raise ValueError(f"Песня с названием {song_title} уже существует в другом плейлисте. Транзакция будет отменена.")
+
+        product = Product(name=f"Товар для {name}", description=f"Официальный товар для плейлиста {name}", price=29.99)
+        product.save()
+
+
+def create_product_and_playlist_view(request):
+    try:
+        create_product_and_playlist("Мой плейлист", "Моя песня", "Мой исполнитель")
+        return HttpResponse("Товар и плейлист успешно созданы!")
+    except ValueError as e:
+        return HttpResponse(str(e))
