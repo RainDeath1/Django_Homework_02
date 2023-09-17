@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'todo_list',
+    'captcha',
 ]
+CAPTCHA_CHALLENGE_FUNC = 'captcha.helpers.random_char_challenge'
+CAPTCHA_LENGTH = 5
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

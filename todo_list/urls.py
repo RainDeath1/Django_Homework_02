@@ -2,7 +2,8 @@ from django.urls import path, re_path
 
 from . import views
 from .views import TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension, \
-    UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view
+    UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view,\
+    feedback_view
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 
@@ -33,5 +34,7 @@ urlpatterns = [
     path('playlists/create/', views.playlist_create, name='playlist_create'),
     path('songs/create/', views.song_create, name='song_create'),
     path('create_product/', views.create_product_and_playlist_view, name='create_product_and_playlist'),
+    #home_32
+    path('feedback/', feedback_view, name='feedback'),
 ]
 

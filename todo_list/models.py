@@ -89,3 +89,10 @@ class PremiumProduct(DiscountableProduct):
 
     def __str__(self):
         return f"Премиум: {self.name}"
+
+
+#32
+class FeedbackMessage(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Имя")
+    email = models.EmailField()
+    message = models.TextField(verbose_name="описание")

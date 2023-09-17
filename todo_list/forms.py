@@ -1,7 +1,9 @@
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory
 from .models import Task, IceCream, Product, Playlist, Song
+
 
 
 # class TaskForm(forms.ModelForm):
@@ -62,6 +64,14 @@ class PlaylistForm(forms.ModelForm):
 
 
 class SongForm(forms.ModelForm):
+    # captcha = CaptchaField(label='Введите код с картинки', error_messages={'invalid':'Неправильный код'})
+
     class Meta:
         model = Song
         fields = ['title', 'artist']
+
+#home_32
+class FeedbackForm(forms.Form):
+    name = forms.CharField(label="Ваше имя", max_length=100)
+    email = forms.EmailField(label="Ваш e-mail")
+    message = forms.CharField(label="Сообщение", widget=forms.Textarea)

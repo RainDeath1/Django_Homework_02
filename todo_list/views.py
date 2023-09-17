@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
-from .models import Task, IceCream, Playlist, Song, Product
-from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm
+from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage
+from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -238,3 +238,20 @@ def create_product_and_playlist_view(request):
         return HttpResponse("Товар и плейлист успешно созданы!")
     except ValueError as e:
         return HttpResponse(str(e))
+
+
+def feedback_view(request):
+    if request.method == "POST":
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = FeedbackMessage(
+                name=form.cleaned_data['name'],
+                email=form.cleaned_data['email'],
+                message=form.cleaned_data['message']
+            )
+            feedback.save()
+            return redirect('tasks:playlist_list')
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'playlist/feedback.html', {'form': form})
