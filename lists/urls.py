@@ -23,6 +23,6 @@ urlpatterns = [
 
 ]
 
-urlpatterns += [
-    path('captcha/', include('captcha.urls')),
-]
+# urlpatterns += [
+#     path('captcha/', include('captcha.urls')),
+# ]

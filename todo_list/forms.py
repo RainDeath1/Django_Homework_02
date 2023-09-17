@@ -1,4 +1,4 @@
-
+from captcha.fields import CaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory
@@ -64,7 +64,7 @@ class PlaylistForm(forms.ModelForm):
 
 
 class SongForm(forms.ModelForm):
-    # captcha = CaptchaField(label='Введите код с картинки', error_messages={'invalid':'Неправильный код'})
+    captcha = CaptchaField(label='Введите код с картинки', error_messages={'invalid':'Неправильный код'})
 
     class Meta:
         model = Song
