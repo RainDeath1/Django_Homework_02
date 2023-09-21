@@ -1,0 +1,71 @@
+{% extends "layout/basic.html" %}
+{% load bbcode_tags %}
+{% load bootstrap4 %}
+{% load filtersandtags %}
+
+{% block content %}
+
+<p>Количество записей: {{ page.count }}</p>
+
+<p>{{ block.super }}</p>
+
+{% if user.is_authenticated %}
+<h3>
+    <a href="{% url 'logout' %}">
+        Выйти ({{ user.username }})
+    </a>
+</h3>
+{% else %}
+<h3>
+    <a href="{% url 'login' %}">
+        Войти
+    </a>
+</h3>
+{% endif %}
+
+{#% bootstrap_pagination page size="small" url="/page" %#}
+
+{% for bb in bbs %}
+<div>
+    <h2>
+        <a href="{% url 'detail' pk=bb.pk %}">
+            {{ bb.title_and_price }}
+        </a>
+    </h2>
+    <p>{{ bb.content.rendered }}</p>
+
+    <p><strong>Цена:</strong> {{ bb.price|cur }}</p>
+    <p><strong>Цена:</strong> {{ bb.price|cur:'тг.' }}</p>
+
+    <p><a href="{{ bb.rubric.get_absolute_url }}">
+        {{ bb.rubric.name }}</a></p>
+    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+</div>
+{% endfor %}
+
+
+<nav>
+    <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'page' page.previous_page_number %}">Предыдущая</a>
+        </li>
+        {% endif %}
+        {% for i in page.paginator.page_range %}
+            {% if i == page.number %}
+                <li class="page-item active" aria-current="page">
+            {% else %}
+                <li class="page-item">
+            {% endif %}
+                    <a class="page-link" href="/page/{{ i }}">{{ i }}</a>
+                </li>
+        {% endfor %}
+        {% if page.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'page' page.next_page_number %}">Следующая</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock content %}

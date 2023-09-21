@@ -1,0 +1,45 @@
+{% load static %}
+{#% load count_bbs %#}
+{% load bootstrap4 %}
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Главная{% endblock %} ::
+        Доска объявлений</title>
+
+    {% bootstrap_css %}
+
+    <link rel="stylesheet" href="{% static 'bboard/style.css' %}">
+    {#<link rel="stylesheet" href="{% get_static_prefix %}bboard/style.css">#}
+    {#<link rel="stylesheet" href="{{ STATIC_URL }}bboard/style.css">#}
+</head>
+<body>
+
+<header>
+    <h1>Объявления</h1>
+</header>
+<div class = 'text-center'>
+{% for group in users_group %}
+    <h5>Группы текущего пользователя:  </h5>
+    <p>{{ group.name }}</p>
+{% endfor %}
+</div>
+{% include 'includes/inc_main_menu.html' %}
+
+<section>
+    {% block content %}
+        Контента нет, но он есть!
+    {% endblock %}
+</section>
+
+
+{% bootstrap_javascript jquery=True %}
+
+{% static 'bboard/script.js' as js_url %}
+<script src="{{ js_url }}"></script>
+
+</body>
+</html>
