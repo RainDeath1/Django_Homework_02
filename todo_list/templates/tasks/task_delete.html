@@ -1,0 +1,18 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Удалить задачу
+{% endblock %}
+
+{% block h1 %}
+    Вы действительно хотите удалить эту задачу?
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'tasks:task-delete' task.pk %}" class="mb-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+    <a href="{% url 'tasks:task-list' %}" class="btn btn-secondary">Вернуться к списку задач</a>
+{% endblock %}
+

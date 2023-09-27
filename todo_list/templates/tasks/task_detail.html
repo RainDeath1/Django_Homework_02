@@ -1,0 +1,33 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Детали задачи
+{% endblock %}
+
+{% block h1 %}
+    {{ task.title }}
+{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">{{ task.title }}</h2>
+    <p><strong>Описание:</strong> {{ task.description }}</p>
+    <p><strong>Дата выполнения:</strong> {{ task.due_date }}</p>
+    <div class="mb-3">
+        <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-primary me-2">Редактировать</a>
+        <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger">Удалить</a>
+    </div>
+
+{% if history %}
+    <h3>История изменений</h3>
+    <ul>
+        {% for change in history %}
+        {% ifchanged change.date %}
+            <li><strong>{{ change.date|date:"d M Y" }}</strong></li>
+        {% endifchanged %}
+        <li>{{ change.description }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+    <a href="{% url 'tasks:task-list' %}" class="btn btn-secondary">Вернуться к списку задач</a>
+{% endblock %}

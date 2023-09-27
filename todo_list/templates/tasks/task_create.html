@@ -1,0 +1,16 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Создать новую задачу
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="mb-4">Создать новую задачу</h1>
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
+    <a href="{% url 'tasks:task-list' %}" class="btn btn-secondary">Вернуться к списку задач</a>
+{% endblock %}

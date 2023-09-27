@@ -1,0 +1,13 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h2>Playlists</h2>
+<ul>
+    {% for playlist in playlists %}
+    <li>
+        <a href="{% url 'tasks:playlist_detail' pk=playlist.pk %}">{{ playlist.name }}</a>
+
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
