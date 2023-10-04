@@ -2,7 +2,7 @@ from captcha.fields import CaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory
-from .models import Task, IceCream, Product, Playlist, Song, Profile, Sending
+from .models import Task, IceCream, Product, Playlist, Song, Profile, Sending, Documents
 
 
 # class TaskForm(forms.ModelForm):
@@ -87,3 +87,10 @@ class SendingForm(forms.ModelForm):
     class Meta:
         model = Sending
         fields = ['content']
+
+
+#home_38
+class DocumentsForm(forms.ModelForm):
+    class Meta:
+        model = Documents
+        fields = ['title', 'file', 'image']

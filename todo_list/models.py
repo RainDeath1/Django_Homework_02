@@ -4,6 +4,8 @@ from precise_bbcode.bbcode import get_parser
 
 from kzflavor.models import KZIINField, KZIDCardField
 from precise_bbcode.fields import BBCodeTextField
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class Task(models.Model):
@@ -12,6 +14,7 @@ class Task(models.Model):
     due_date = models.DateField(verbose_name='Дата выполнения')
     #37
     file = models.FileField(upload_to='tasks_files/', null=True, blank=True, verbose_name='Загрузка файла')
+
     def __str__(self):
         return self.title
 
@@ -121,3 +124,9 @@ class Sending(models.Model):
         bbcode_parser = get_parser()
         self.rendered_content = bbcode_parser.render(str(self.content))
         super().save(*args, **kwargs)
+
+
+class Documents(models.Model):
+    title = models.CharField(max_length=100, verbose_name='Название документа')
+    file = models.FileField(upload_to='documents/', verbose_name='Файл')
+    image = models.ImageField(upload_to='documents/images', blank=True, null=True)

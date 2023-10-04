@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Change, Song, Playlist, Sending, Product
+from .models import Task, Change, Song, Playlist, Sending, Product, Documents
 
 admin.site.register(Task)
 admin.site.register(Change)
@@ -19,3 +19,8 @@ class PlaylistAdmin(admin.ModelAdmin):
 @admin.register(Sending)
 class SendingAdmin(admin.ModelAdmin):
     list_display = ['content']
+
+
+@admin.register(Documents)
+class DocumentAdmin(admin.ModelAdmin):
+    localflavor = ['title', 'file']

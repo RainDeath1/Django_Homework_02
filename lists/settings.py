@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'kzflavor',
     'precise_bbcode',
     'bootstrap4',
+    'django_cleanup'
 ]
 CAPTCHA_CHALLENGE_FUNC = 'captcha.helpers.random_char_challenge'
 CAPTCHA_LENGTH = 5
@@ -91,19 +92,18 @@ WSGI_APPLICATION = 'lists.wsgi.application'
 
 DATABASES = {
     'default':
-    #     {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-
-{
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'lists_to_do',
-    'USER': env('DB_USER'),
-    'PASSWORD': env('DB_PASS'),
-    'HOST': env('DB_HOST'),
-    'PORT': env('DB_PORT'),
-}
+        {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+# {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': 'lists_to_do',
+#     'USER': env('DB_USER'),
+#     'PASSWORD': env('DB_PASS'),
+#     'HOST': env('DB_HOST'),
+#     'PORT': env('DB_PORT'),
+# }
 }
 
 
