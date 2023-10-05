@@ -1,0 +1,27 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Список документов
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Список документов</h2>
+    <ul>
+    {% for document in documents %}
+        <li>
+            <h3>{{ document.title }}</h3>
+            <p>
+                <strong>Файл:</strong>
+                <a href="{{ document.file.url }}" download>Скачать</a>
+            </p>
+            {% if document.image %}
+            <div>
+                <img src="{{ document.image.url }}" alt="{{ document.title }}" width="200">
+            </div>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

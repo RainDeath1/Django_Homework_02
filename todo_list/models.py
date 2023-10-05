@@ -128,5 +128,7 @@ class Sending(models.Model):
 
 class Documents(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название документа')
-    file = models.FileField(upload_to='documents/', verbose_name='Файл')
+    file = models.FileField(upload_to='documents/files', verbose_name='Файл')
     image = models.ImageField(upload_to='documents/images', blank=True, null=True)
+    thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(100, 50)],
+                               format='JPEG', options={'quality': 60})

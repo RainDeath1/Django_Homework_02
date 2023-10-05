@@ -16,7 +16,11 @@ from django.views.generic import CreateView, DeleteView, ListView, DetailView, A
 from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm, ProfileForm,\
     SendingForm
 
-from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending
+from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
+
+from django.conf import settings
+
+import os
 
 logger = logging.getLogger(__name__)
 handler = logging.FileHandler('request_data.log')
@@ -309,3 +313,23 @@ def show_accordion(request):
 
 def show_alert(request):
     return render(request, 'django_bootstrap_example/alert.html')
+
+
+def document_list_view(request):
+    documents = Documents.objects.all()
+    return render(request, 'documents/document_list.html', {'documents': documents})
+
+
+def upload_file_view(request):
+    if request.method == 'POST' and 'file' in request.FILES:
+        uploaded_file = request.FILES['file']
+        file_name = uploaded_file.name
+        file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+        with open(file_path, 'wb+') as destination:
+            for chunk in uploaded_file.chunks():
+                destination.write(chunk)
+
+        return HttpResponse("Файл успешно загружен!")
+    else:
+        return render(request, 'documents/document_create.html', {})

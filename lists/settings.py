@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'kzflavor',
     'precise_bbcode',
     'bootstrap4',
-    'django_cleanup'
+    'django_cleanup',
+    'easy_thumbnails',
 ]
 CAPTCHA_CHALLENGE_FUNC = 'captcha.helpers.random_char_challenge'
 CAPTCHA_LENGTH = 5

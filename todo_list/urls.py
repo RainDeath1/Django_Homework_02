@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from . import views
 from .views import TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension, \
     UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view,\
-    feedback_view, create_post, SendingDetailView, product_list
+    feedback_view, create_post, SendingDetailView, product_list, document_list_view
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 
@@ -45,5 +45,9 @@ urlpatterns = [
     #home_35
     path('accordion/', views.show_accordion, name='accordion'),
     path('alert/', views.show_alert, name='alert'),
+    #home_38
+    path('documents/', document_list_view, name='document-list'),
+    path('upload/', views.upload_file_view, name='upload_file'),
+
 ]
 
