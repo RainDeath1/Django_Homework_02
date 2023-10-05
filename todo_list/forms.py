@@ -3,6 +3,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory
 from .models import Task, IceCream, Product, Playlist, Song, Profile, Sending, Documents
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 # class TaskForm(forms.ModelForm):
@@ -94,3 +96,10 @@ class DocumentsForm(forms.ModelForm):
     class Meta:
         model = Documents
         fields = ['title', 'file', 'image']
+
+
+#home_39
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]

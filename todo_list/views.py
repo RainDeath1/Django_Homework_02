@@ -14,7 +14,7 @@ from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 
 from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm, ProfileForm,\
-    SendingForm
+    SendingForm, RegisterForm
 
 from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
 
@@ -333,3 +333,14 @@ def upload_file_view(request):
         return HttpResponse("Файл успешно загружен!")
     else:
         return render(request, 'documents/document_create.html', {})
+
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks:login')  # перенаправляем на страницу входа после успешной регистрации
+    else:
+        form = RegisterForm()
+    return render(request, "registration/register.html", {"form": form})

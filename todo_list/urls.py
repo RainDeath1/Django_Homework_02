@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from . import views
 from .views import TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension, \
     UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view,\
-    feedback_view, create_post, SendingDetailView, product_list, document_list_view
+    feedback_view, create_post, SendingDetailView, product_list, document_list_view, register_view
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 
@@ -16,8 +16,22 @@ urlpatterns = [
     path('<int:pk>/update/', TaskUpdateView.as_view(), name='task-update'),
     path('<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
     path('compr/', comprehension, name='comprehension'),
+    #home_39
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='tasks:task-list'), name='logout'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'),
+         name='password_reset'),
+    path('password_reset/done/',
+         auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'),
+         name='password_reset_done'),
+    path('reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    path('reset/done/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
+         name='password_reset_complete'),
+    path('register/', register_view, name='register'),
+
     path('users/', UserListView.as_view(), name='users'),
     path('user/<int:user_id>/', UserDetailView.as_view(), name='user_detail'),
     path('user/redirect/', UserRedirectView.as_view(), name='user_redirect'),
