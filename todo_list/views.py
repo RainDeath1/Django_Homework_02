@@ -1,10 +1,11 @@
 import logging
-
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import user_logged_in
 from django.core.paginator import Paginator
+from django.core.signing import Signer
 from django.db import transaction
 from django.dispatch import receiver
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
@@ -12,12 +13,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
-
-from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm, ProfileForm,\
+from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm, ProfileForm, \
     SendingForm, RegisterForm
-
 from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
-
 from django.conf import settings
 
 import os
@@ -32,7 +30,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 
-#home_28
+# home_28
 @receiver(user_logged_in)
 def user_logged_in_handler(sender, request, user, **kwargs):
     print(f'Пользователь {user.username} вошел в систему.')
@@ -61,7 +59,12 @@ class TaskCreateView(CreateView):
     def post(self, request):
         form = TaskForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            # home_41
+            signer = Signer()
+            task = form.save(commit=False)
+            signed_title = signer.sign(task.title)
+            task.title = signed_title
+            task.save()
             return redirect('tasks:task-list')
         else:
             print(form.errors)
@@ -92,13 +95,32 @@ class UserRedirectView(View):
             return HttpResponseRedirect(reverse('tasks:users'))
 
 
+# home_41
+def verify_task_title(task):
+    signer = Signer()
+    try:
+        original_task = signer.unsign(task.title)
+        return original_task
+    except:
+        raise ValueError('Название задачи сфальсифицировано')
+
+
 class TaskDetailView(View):
 
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
+        try:
+            verified_title = verify_task_title(task)
+        except ValueError:
+            return HttpResponse("Ошибка: заголовок задачи был изменен")
         history = task.change_set.all()
         print(history)
-        return render(request, 'tasks/task_detail.html', {'task': task, 'history': history})
+        context = {
+            'task': task,
+            'history': history,
+            'verified_title': verified_title
+        }
+        return render(request, 'tasks/task_detail.html', context)
 
 
 class TaskArchiveIndexView(ArchiveIndexView):
@@ -153,7 +175,7 @@ class IceCreamListView(ListView):
     template_name = 'Icecream/icecream_list.html'
 
 
-#26
+# 26
 def product_create_view(request):
     success_message = None
     error_message = None
@@ -176,7 +198,7 @@ def product_create_view(request):
     })
 
 
-#27 home_27
+# 27 home_27
 def create_multiple_tasks(request):
     formset = TaskFormSet(queryset=Task.objects.none())
 
@@ -234,7 +256,8 @@ def create_product_and_playlist(name, song_title, artist):
         playlist.songs.add(song)
 
         if Playlist.objects.filter(songs__title=song_title).exists():
-            raise ValueError(f"Песня с названием {song_title} уже существует в другом плейлисте. Транзакция будет отменена.")
+            raise ValueError(
+                f"Песня с названием {song_title} уже существует в другом плейлисте. Транзакция будет отменена.")
 
         product = Product(name=f"Товар для {name}", description=f"Официальный товар для плейлиста {name}", price=29.99)
         product.save()
@@ -270,7 +293,7 @@ def feedback_view(request):
     return render(request, 'playlist/feedback.html', {'form': form})
 
 
-#home_33
+# home_33
 @login_required
 def edit_profile(request):
     try:
@@ -288,7 +311,7 @@ def edit_profile(request):
     return render(request, 'playlist/profile_edit.html', {'form': form})
 
 
-#34
+# 34
 def create_post(request):
     if request.method == 'POST':
         form = SendingForm(request.POST)
@@ -306,7 +329,7 @@ class SendingDetailView(DetailView):
     context_object_name = 'post'
 
 
-#35
+# 35
 def show_accordion(request):
     return render(request, 'django_bootstrap_example/accordion.html')
 
@@ -330,7 +353,11 @@ def upload_file_view(request):
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
 
-        return HttpResponse("Файл успешно загружен!")
+        document = Documents(title=file_name, file=file_name)
+        document.save()
+        # home_41
+        messages.success(request, "Файл успешно загружен!")
+        return redirect('tasks:document-list')
     else:
         return render(request, 'documents/document_create.html', {})
 
@@ -340,7 +367,7 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('tasks:login')  # перенаправляем на страницу входа после успешной регистрации
+            return redirect('tasks:login')
     else:
         form = RegisterForm()
     return render(request, "registration/register.html", {"form": form})
