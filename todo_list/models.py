@@ -9,7 +9,7 @@ from imagekit.processors import ResizeToFill
 
 
 class Task(models.Model):
-    title = models.CharField(max_length=50, verbose_name='Название')
+    title = models.CharField(max_length=200, verbose_name='Название')
     description = models.TextField(verbose_name='Описание')
     due_date = models.DateField(verbose_name='Дата выполнения')
     #37
@@ -21,6 +21,19 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
+
+
+#home_42
+class TaskHistory(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="history")
+    field_name = models.CharField(max_length=100, verbose_name="Название поля")
+    old_value = models.TextField(null=True, blank=True, verbose_name='Старое значение поля')
+    new_value = models.TextField(null=True, blank=True, verbose_name='Новое значение поля')
+    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата обновления')
+
+    class Meta:
+        ordering = ['-updated_at']
+        verbose_name = 'История изменений'
 
 
 class Change(models.Model):
@@ -132,3 +145,17 @@ class Documents(models.Model):
     image = models.ImageField(upload_to='documents/images', blank=True, null=True)
     thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(100, 50)],
                                format='JPEG', options={'quality': 60})
+
+#home_42
+# class Article(models.Model):
+#     title = models.CharField(max_length=200)
+#     content = models.TextField()
+#     author = models.ForeignKey(User, on_delete=models.CASCADE)
+#
+#
+# class ArticleHistory(models.Model):
+#     article = models.ForeignKey(Article, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=200)
+#     content = models.TextField()
+#     updated_at = models.DateTimeField(auto_now_add=True)
+#     updated_by = models.ForeignKey(User, on_delete=models.CASCADE)
