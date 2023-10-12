@@ -17,7 +17,7 @@ from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistFor
     SendingForm, RegisterForm
 from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
 from django.conf import settings
-
+from .services import send_reset_password_emails
 import os
 
 logger = logging.getLogger(__name__)
@@ -371,3 +371,8 @@ def register_view(request):
     else:
         form = RegisterForm()
     return render(request, "registration/register.html", {"form": form})
+
+
+def send_reset_password_on_emails(request):
+    success_count = send_reset_password_emails(request)
+    return HttpResponse(f"Успешно отправлено {success_count} писем.")

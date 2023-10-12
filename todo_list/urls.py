@@ -62,6 +62,8 @@ urlpatterns = [
     #home_38
     path('documents/', document_list_view, name='document-list'),
     path('upload/', views.upload_file_view, name='upload_file'),
+    #home_43
+    path('send-reset-emails/', views.send_reset_password_on_emails, name='send_reset_emails'),
 
 ]
 
