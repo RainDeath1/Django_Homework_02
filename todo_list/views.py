@@ -18,6 +18,7 @@ from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistFor
 from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
 from django.conf import settings
 from .services import send_reset_password_emails
+from django.views.decorators.cache import cache_page
 import os
 
 logger = logging.getLogger(__name__)
@@ -106,7 +107,7 @@ def verify_task_title(task):
 
 
 class TaskDetailView(View):
-
+    @cache_page(60 * 2)
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         try:
@@ -376,3 +377,6 @@ def register_view(request):
 def send_reset_password_on_emails(request):
     success_count = send_reset_password_emails(request)
     return HttpResponse(f"Успешно отправлено {success_count} писем.")
+
+
+
