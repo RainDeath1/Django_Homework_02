@@ -19,6 +19,9 @@ from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Pr
 from django.conf import settings
 from .services import send_reset_password_emails
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+from django.views.decorators.http import condition
+from django.utils.decorators import method_decorator
 import os
 
 logger = logging.getLogger(__name__)
@@ -37,6 +40,12 @@ def user_logged_in_handler(sender, request, user, **kwargs):
     print(f'Пользователь {user.username} вошел в систему.')
 
 
+def compute_etag(request):
+    total_tasks = Task.objects.count()
+    return str(total_tasks)
+
+
+@method_decorator(condition(etag_func=compute_etag), name='dispatch')
 class TaskListView(LoginRequiredMixin, View):
     login_url = '/login'
 
@@ -107,7 +116,6 @@ def verify_task_title(task):
 
 
 class TaskDetailView(View):
-    @cache_page(60 * 2)
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         try:
@@ -213,6 +221,7 @@ def create_multiple_tasks(request):
     return render(request, 'tasks/multiple_task_create.html', context)
 
 
+@cache_page(60 * 2)
 def playlist_list(request):
     playlists = Playlist.objects.all()
     print(playlists)
@@ -264,6 +273,7 @@ def create_product_and_playlist(name, song_title, artist):
         product.save()
 
 
+@cache_page(60 * 2)
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'products/product_list.html', {'products': products})
@@ -379,4 +389,12 @@ def send_reset_password_on_emails(request):
     return HttpResponse(f"Успешно отправлено {success_count} писем.")
 
 
+#home_44_for_test
+def tasks_view(request):
+    tasks = cache.get('all_tasks')
+    if not tasks:
+        tasks = Task.objects.all()
+        cache.set('all_tasks', tasks, 300)
+    return JsonResponse({'tasks': list(tasks.values())})
 
+#end_44

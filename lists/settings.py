@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'todo_list',
+
     'captcha',
     'localflavor',
     'kzflavor',
@@ -53,6 +54,9 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_cleanup',
     'easy_thumbnails',
+    'debug_toolbar',
+    'template_profiler_panel',
+    'django_redis',
 ]
 CAPTCHA_CHALLENGE_FUNC = 'captcha.helpers.random_char_challenge'
 CAPTCHA_LENGTH = 5
@@ -65,6 +69,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+
 ]
 
 ROOT_URLCONF = 'lists.urls'
@@ -97,6 +105,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+
 # {
 #     'ENGINE': 'django.db.backends.postgresql',
 #     'NAME': 'lists_to_do',
@@ -166,9 +175,25 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'unique-snowflake',
+#     }
+# }
+
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            # 'PASSWORD': 'mysecret',
+        }
     }
 }
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+SESSION_COOKIE_AGE = 1259
