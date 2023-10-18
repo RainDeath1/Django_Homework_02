@@ -398,3 +398,15 @@ def send_reset_password_on_emails(request):
 #     return JsonResponse({'tasks': list(tasks.values())})
 
 #end_44
+
+def user_list(request):
+    users = User.objects.all()
+    return render(request, 'profile/user_list.html', {'users': users})
+
+
+def user_detail(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    profile= user.profile
+    context = {'user': user,
+               'profile': profile}
+    return render(request, 'profile/user_detail.html', context)

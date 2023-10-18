@@ -68,5 +68,9 @@ urlpatterns = [
 
     #home_44_for_test
     # path('tasks/', views.tasks_view, name='tasks_view'),
+
+    # home_45
+    path('users/', views.user_list, name='user_list'),
+    path('users/<int:user_id>/', views.user_detail, name='user_detail'),
 ]
 

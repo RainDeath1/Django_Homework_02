@@ -122,11 +122,12 @@ class FeedbackMessage(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    phone_number = models.CharField(max_length=15, verbose_name='Номер телефона')
     address = models.TextField()
     iin = KZIINField(verbose_name="ИИН")
     id_card = KZIDCardField(verbose_name="Номер удостоверения")
+    image = models.ImageField(upload_to='profile/images', blank=True, null=True)
 
 
 class Sending(models.Model):

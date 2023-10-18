@@ -1,0 +1,17 @@
+{% extends "profile/profile_base.html" %}
+
+{% block content %}
+<h2>Детали для профиля: {{ profile.user.username }}</h2>
+<p>Email: {{ profile.user.email }}</p>
+<p>Phone Number: {{ profile.phone_number }}</p>
+<p>Address: {{ profile.address }}</p>
+<p>ИИН: {{ profile.iin }}</p>
+<p>Номер удостоверения: {{ profile.id_card }}</p>
+
+
+{% if profile.image %}
+    <img src="{{ profile.image.url }}" alt="Profile Image" width="200">  <!-- Установите нужный размер изображения -->
+{% else %}
+    <p>No profile image uploaded.</p>
+{% endif %}
+{% endblock %}

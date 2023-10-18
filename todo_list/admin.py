@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Change, Song, Playlist, Sending, Product, Documents, TaskHistory, AddressBook
+from .models import Task, Change, Song, Playlist, Sending, Product, Documents, TaskHistory, AddressBook, Profile
 
 admin.site.register(Task)
 admin.site.register(Change)
@@ -41,3 +41,12 @@ class AddressBookAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AddressBook, AddressBookAdmin)
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'phone_number', 'address', 'iin', 'id_card')
+    search_fields = ('user__username', 'phone_number', 'iin', 'id_card')
+    list_filter = ('user',)
+
+
+admin.site.register(Profile, ProfileAdmin)
