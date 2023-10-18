@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Change, Song, Playlist, Sending, Product, Documents, TaskHistory
+from .models import Task, Change, Song, Playlist, Sending, Product, Documents, TaskHistory, AddressBook
 
 admin.site.register(Task)
 admin.site.register(Change)
@@ -30,3 +30,14 @@ class DocumentAdmin(admin.ModelAdmin):
 class TaskHistoryAdmin(admin.ModelAdmin):
     list_display = ['task', 'field_name', 'old_value', 'new_value', 'updated_at']
     readonly_fields = ['task', 'field_name', 'old_value', 'new_value', 'updated_at']
+
+
+class AddressBookAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone_number')
+    search_fields = ['name', 'email', 'phone_number']
+    list_filter = ['name', 'email']
+    list_editable = ['email', 'phone_number']
+    list_display_links = ['name']
+
+
+admin.site.register(AddressBook, AddressBookAdmin)

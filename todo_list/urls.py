@@ -11,9 +11,9 @@ from django.contrib.auth.views import LogoutView
 app_name = 'tasks'
 
 urlpatterns = [
-    re_path('^$', cache_page(60*5)(TaskListView.as_view()), name='task-list'),
+    re_path('^$', TaskListView.as_view(), name='task-list'),
     re_path('^create/$', TaskCreateView.as_view(), name='task-create'),
-    path('<int:pk>/', cache_page(60*5)(TaskDetailView.as_view()), name='task-detail'),
+    path('<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
     path('<int:pk>/update/', TaskUpdateView.as_view(), name='task-update'),
     path('<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
     path('compr/', comprehension, name='comprehension'),
@@ -33,7 +33,7 @@ urlpatterns = [
          name='password_reset_complete'),
     path('register/', register_view, name='register'),
 
-    path('users/', cache_page(60*5)(UserListView.as_view()), name='users'),
+    path('users/', UserListView.as_view(), name='users'),
     path('user/<int:user_id>/', UserDetailView.as_view(), name='user_detail'),
     path('user/redirect/', UserRedirectView.as_view(), name='user_redirect'),
     path('tasks/archive/', TaskArchiveIndexView.as_view(), name='task_archive'),
@@ -67,6 +67,6 @@ urlpatterns = [
     path('send-reset-emails/', views.send_reset_password_on_emails, name='send_reset_emails'),
 
     #home_44_for_test
-    path('tasks/', views.tasks_view, name='tasks_view'),
+    # path('tasks/', views.tasks_view, name='tasks_view'),
 ]
 

@@ -159,3 +159,13 @@ class Documents(models.Model):
 #     content = models.TextField()
 #     updated_at = models.DateTimeField(auto_now_add=True)
 #     updated_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+# home_45_start
+class AddressBook(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Имя')
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=50, verbose_name='Номер телефона')
+
+    class Meta:
+        verbose_name = 'Записная книжка'

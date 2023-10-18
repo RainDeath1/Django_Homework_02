@@ -45,7 +45,7 @@ def compute_etag(request):
     return str(total_tasks)
 
 
-@method_decorator(condition(etag_func=compute_etag), name='dispatch')
+# @method_decorator(condition(etag_func=compute_etag), name='dispatch')
 class TaskListView(LoginRequiredMixin, View):
     login_url = '/login'
 
@@ -221,7 +221,7 @@ def create_multiple_tasks(request):
     return render(request, 'tasks/multiple_task_create.html', context)
 
 
-@cache_page(60 * 2)
+# @cache_page(60 * 2)
 def playlist_list(request):
     playlists = Playlist.objects.all()
     print(playlists)
@@ -273,7 +273,7 @@ def create_product_and_playlist(name, song_title, artist):
         product.save()
 
 
-@cache_page(60 * 2)
+# @cache_page(60 * 2)
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'products/product_list.html', {'products': products})
@@ -390,11 +390,11 @@ def send_reset_password_on_emails(request):
 
 
 #home_44_for_test
-def tasks_view(request):
-    tasks = cache.get('all_tasks')
-    if not tasks:
-        tasks = Task.objects.all()
-        cache.set('all_tasks', tasks, 300)
-    return JsonResponse({'tasks': list(tasks.values())})
+# def tasks_view(request):
+#     tasks = cache.get('all_tasks')
+#     if not tasks:
+#         tasks = Task.objects.all()
+#         cache.set('all_tasks', tasks, 300)
+#     return JsonResponse({'tasks': list(tasks.values())})
 
 #end_44
