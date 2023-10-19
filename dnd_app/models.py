@@ -74,3 +74,29 @@ class Armor(Item):
     defense = models.PositiveIntegerField(blank=True, null=True, verbose_name="Защита")
     material = models.CharField(max_length=50, blank=True, null=True, verbose_name="Материал")
     weight = models.FloatField(blank=True, null=True, verbose_name="Вес")
+
+
+class Consumable(Item):
+    EFFECT_CHOICES = (
+        ('HEAL', 'Лечение'),
+        ('BUFF', 'Усиление'),
+        ('DEBUFF', 'Ослабление'),
+        ('OTHER', 'Другое'),
+    )
+
+    effect_type = models.CharField(max_length=50, choices=EFFECT_CHOICES, default='OTHER', verbose_name="Тип эффекта")
+    effect_strength = models.PositiveIntegerField(verbose_name="Сила эффекта", null=True, blank=True)
+    duration = models.DurationField(blank=True, null=True, verbose_name="Продолжительность действия")
+
+    class Meta:
+        verbose_name_plural = 'Расходники'
+
+
+class Currency(models.Model):
+    name = models.CharField(max_length=50, verbose_name="Название")
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField(default=0, verbose_name='Количество')
+
+    def __str__(self):
+        return f"{self.amount} {self.name} у {self.character.name}"
+
