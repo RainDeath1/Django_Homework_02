@@ -1,0 +1,26 @@
+{% extends "django_bootstrap_example/base_1.html" %}
+
+{% load custom_tags %}
+
+
+{% block content %}
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    Аккардеон?
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                Что-то внутри аккардеона, ничего не придумал лучше, да ладно тебе, обычная дефолтная панель
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

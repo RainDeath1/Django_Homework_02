@@ -1,0 +1,21 @@
+{% extends 'tasks/base.html' %}
+
+{% block title%} Создать продукт {% endblock %}
+
+{% block content%}
+<h2>Добавить продукт</h2>
+{% if success_message %}
+  <div class="alert alert-success" role="alert">{{success_message}}</div>
+{% endif %}
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">{{error_message}}</div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Добавить</button>
+</form>
+
+{% endblock %}
