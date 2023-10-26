@@ -1,0 +1,18 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Вход
+{% endblock %}
+
+{% block h1 %}
+    Вход
+{% endblock %}
+
+{% block content %}
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+{% endblock %}
+

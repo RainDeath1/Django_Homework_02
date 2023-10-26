@@ -1,0 +1,18 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Редактирование задачи
+{% endblock %}
+
+{% block h1 %}
+    Редактирование задачи
+{% endblock %}
+
+{% block content %}
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+    <a href="{% url 'tasks:task-detail' task.pk %}" class="btn btn-secondary">Отменить</a>
+{% endblock %}

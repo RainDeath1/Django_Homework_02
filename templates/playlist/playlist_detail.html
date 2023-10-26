@@ -1,0 +1,17 @@
+{%  extends "tasks/base.html" %}
+
+{% load half_str %}
+
+
+
+{% block content %}
+<h2>{{playlist.name|half_str}}</h2>
+<p>{{ playlist.description }}</p>
+
+<h3>Songs:</h3>
+<ul>
+  {% for song in playlist.songs.all %}
+  <li>{{song.artist}} - {{ song.title }}({{ song.duration }})</li>
+  {% endfor %}
+</ul>
+{% endblock %}
