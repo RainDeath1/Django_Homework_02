@@ -14,7 +14,9 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from rest_framework import viewsets
-
+from rest_framework import generics, filters, mixins
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm, ProfileForm, \
     SendingForm, RegisterForm
 from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
@@ -25,7 +27,7 @@ from django.core.cache import cache
 from django.views.decorators.http import condition
 from django.utils.decorators import method_decorator
 from .mixins import LoginRequiredMixin, HomePageView
-from .serializers import TaskSerializer,UserSerializer
+from .serializers import TaskSerializer, UserSerializer
 import os
 
 logger = logging.getLogger(__name__)
@@ -410,13 +412,28 @@ def user_list(request):
 
 def user_detail(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    profile= user.profile
+    profile = user.profile
     context = {'user': user,
                'profile': profile}
     return render(request, 'profile/user_detail.html', context)
 
 
-class TaskViewSet(viewsets.ModelViewSet):
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
+class BaseMetaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
+    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'description']
+    ordering_fields = ['id', 'title', 'created_date']
+    ordering = ['id']
+    pagination_class = StandardResultsSetPagination
+
+
+class TaskViewSet(BaseMetaViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
@@ -424,3 +441,16 @@ class TaskViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class TaskDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+
+class TaskListViewSet(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['is_completed']
+

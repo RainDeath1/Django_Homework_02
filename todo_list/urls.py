@@ -4,7 +4,8 @@ from django.views.decorators.cache import cache_page
 from . import views
 from .views import TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension, \
     UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view, \
-    feedback_view, create_post, SendingDetailView, product_list, document_list_view, register_view, UserViewSet
+    feedback_view, create_post, SendingDetailView, product_list, document_list_view, register_view, UserViewSet, \
+    TaskDetailViewSet, TaskListViewSet
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from rest_framework.routers import DefaultRouter
@@ -24,7 +25,7 @@ urlpatterns = [
     path('<int:pk>/update/', TaskUpdateView.as_view(), name='task-update'),
     path('<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
     path('compr/', comprehension, name='comprehension'),
-    #home_39
+    # home_39
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='tasks:task-list'), name='logout'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'),
@@ -57,27 +58,31 @@ urlpatterns = [
     path('songs/create/', views.song_create, name='song_create'),
     path('create_product/', views.create_product_and_playlist_view, name='create_product_and_playlist'),
     path('products/', product_list, name='product_list'),
-    #home_32
+    # home_32
     path('feedback/', feedback_view, name='feedback'),
-    #home_33
+    # home_33
     path('profile/edit/', views.edit_profile, name='profile-edit'),
-    #home_34
+    # home_34
     path('create/post', create_post, name='create_post'),
     path('send/<int:pk>', SendingDetailView.as_view(), name='view_send'),
-    #home_35
+    # home_35
     path('accordion/', views.show_accordion, name='accordion'),
     path('alert/', views.show_alert, name='alert'),
-    #home_38
+    # home_38
     path('documents/', document_list_view, name='document-list'),
     path('upload/', views.upload_file_view, name='upload_file'),
-    #home_43
+    # home_43
     path('send-reset-emails/', views.send_reset_password_on_emails, name='send_reset_emails'),
 
-    #home_44_for_test
+    # home_44_for_test
     # path('tasks/', views.tasks_view, name='tasks_view'),
 
     # home_45
     path('users/', views.user_list, name='user_list'),
     path('users/<int:user_id>/', views.user_detail, name='user_detail'),
+
+    # home_51_52
+    path('tasks/api/<int:pk>', TaskDetailViewSet.as_view(), name='task_detail_api'),
+    path('tasks/api/', TaskListViewSet.as_view(), name='task_list_api'),
 ]
 
