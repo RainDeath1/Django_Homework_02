@@ -31,21 +31,47 @@ from django.utils.decorators import method_decorator
 from .mixins import LoginRequiredMixin, HomePageView
 from .serializers import TaskSerializer, UserSerializer
 import os
+import logging
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 handler = logging.FileHandler('request_data.log')
 handler.setLevel(logging.INFO)
+logger.debug('Это сообщение уровня DEBUG')
+logger.info('Это информационное сообщение')
+logger.warning('Это предупреждение')
+logger.error('Это сообщение об ошибке')
+logger.critical('Это критическое сообщение')
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 
 logger.addHandler(handler)
 
+# start: home_55
+
+
+def risky_function():
+    try:
+
+        1 / 0
+    except ZeroDivisionError as e:
+        logger.error('Ошибка деления на ноль: %s', e)
+    logger.debug('Функция risky_function была вызвана')
+
+
+def view_risky_func(request):
+    if risky_function():
+        return HttpResponse("всё отработано без ошибок")
+    else:
+        return HttpResponse("Произошла ошибка,смотри логи ")
+# end: home_55
+
 
 # home_28
 @receiver(user_logged_in)
 def user_logged_in_handler(sender, request, user, **kwargs):
-    print(f'Пользователь {user.username} вошел в систему.')
+    logger.info(f'Пользователь {user.username} вошел в систему.')
 
 
 def compute_etag(request):
@@ -128,7 +154,8 @@ class TaskDetailView(View):
         task = get_object_or_404(Task, pk=pk)
         try:
             verified_title = verify_task_title(task)
-        except ValueError:
+        except ValueError as ex:
+            logger.error(f'Произошла ошибка: {ex}')
             return HttpResponse("Ошибка: заголовок задачи был изменен")
         history = task.change_set.all()
         print(history)

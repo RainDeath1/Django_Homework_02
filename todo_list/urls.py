@@ -2,10 +2,10 @@ from django.urls import path, re_path, include
 from django.views.decorators.cache import cache_page
 
 from . import views
-from .views import TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension, \
-    UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view, \
-    feedback_view, create_post, SendingDetailView, product_list, document_list_view, register_view, UserViewSet, \
-    TaskDetailViewSet, TaskListViewSet
+from .views import (TaskListView, TaskCreateView, TaskDetailView, TaskUpdateView, TaskDeleteView, comprehension,
+    UserListView, UserDetailView, UserRedirectView, TaskArchiveIndexView, IceCreamListView, product_create_view,
+    feedback_view, create_post, SendingDetailView, product_list, document_list_view, register_view, UserViewSet,
+    TaskDetailViewSet, TaskListViewSet, view_risky_func)
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from rest_framework.routers import DefaultRouter
@@ -90,5 +90,8 @@ urlpatterns = [
     # home_51_52
     path('tasks/api/<int:pk>', TaskDetailViewSet.as_view(), name='task_detail_api'),
     path('tasks/api/', TaskListViewSet.as_view(), name='task_list_api'),
+
+    # home_55
+    path('risky/', view_risky_func, name='risky_function')
 ]
 
