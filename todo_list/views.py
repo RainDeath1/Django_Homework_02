@@ -15,8 +15,10 @@ from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, ArchiveIndexView
 from rest_framework import viewsets
 from rest_framework import generics, filters, mixins
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import APIView
+
 from .forms import TaskForm, IceCreamForm, ProductForm, TaskFormSet, PlaylistForm, SongForm, FeedbackForm, ProfileForm, \
     SendingForm, RegisterForm
 from .models import Task, IceCream, Playlist, Song, Product, FeedbackMessage, Profile, Sending, Documents
@@ -422,6 +424,10 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 1000
+
+
+class LoginViewSet(APIView):
+    permission_classes = [AllowAny]
 
 
 class BaseMetaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
