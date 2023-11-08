@@ -1,0 +1,11 @@
+{% extends 'tasks/base.html' %}
+
+{% load bbcode_tags %}
+
+{% block content %}
+    <div class="post-content">
+        <h2>{{ post.title }}</h2>
+      {#  {{ post.content|bbcode}} #}
+        {{ post.rendered_content|safe }}
+    </div>
+{% endblock %}

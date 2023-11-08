@@ -1,0 +1,14 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1>Список Архивных Задач</h1>
+{% for task in tasks %}
+    <h2><a href="{{ task.get_absolute_url }}">{{task.title}}</a></h2>
+
+    <p>{{ task.description }}</p>
+    <p><strong>Дата выполнения:</strong> {{ task.due_date }}</p>
+    {% empty %}
+        <p> Нет выполненных задач</p>
+    {% endfor %}
+{% endblock %}

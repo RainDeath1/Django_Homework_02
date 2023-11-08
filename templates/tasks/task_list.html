@@ -1,0 +1,50 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Список задач
+{% endblock %}
+
+{% block content %}
+    <div class="list-group mb-4">
+        {% for task in tasks %}
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <ul>
+    {% for item in menu_items %}
+        <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+    {% endfor %}
+    </ul>
+                    <h5 class="mb-1">
+                        <a href="{% url 'tasks:task-detail' task.pk %}">{{ task.title }}</a>
+                    </h5>
+                    <small>{{ task.due_date }}</small>
+                </div>
+                <p class="mb-1">{{ task.description }}</p>
+            </div>
+        {% empty %}
+            <div class="list-group-item">
+                Нет задач.
+            </div>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if tasks.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ tasks.previous_page_number }}">предыдущая</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ tasks.number }} из {{ tasks.paginator.num_pages }}.
+            </span>
+
+            {% if tasks.has_next %}
+                <a href="?page={{ tasks.next_page_number }}">следующая</a>
+                <a href="?page={{ tasks.paginator.num_pages }}">последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <a href="{% url 'tasks:task-create' %}" class="btn btn-primary">Создать новую задачу</a>
+{% endblock %}
+
+
