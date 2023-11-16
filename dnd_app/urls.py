@@ -1,8 +1,10 @@
 from django.urls import path
 
-from . import views
+from .views import index,create_character, character_details
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    # другие шаблоны URL
+    path('', index, name='index'),
+    path('create_character/', create_character, name='create_character'),
+    path('character/<int:character_id>/', character_details, name='character_details'),
 ]
+

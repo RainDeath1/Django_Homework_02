@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+
+{% block main_header %}
+
+{% endblock %}
+{% block to_be_continued %}
+{% endblock %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-md-12">
+
+<h1>{{ character.name }}</h1><br>
+<p>Класс: {{ character.character_class }}</p> <br>
+<p>Раса: {{ character.race }}</p><br>
+<p>Уровень: {{ character.level }}</p><br>
+{% if character.image %}
+    <img src="{{ character.image.url }}" alt="{{ character.name }}" />
+{% endif %}
+
+<h2>Предметы:</h2>
+<ul>
+    {% for item in character.items.all %}
+    <li>{{ item.name }}: {{ item.description }}</li>
+    {% endfor %}
+</ul>
+      </div>
+   </div>
+</div>
+{% endblock %}

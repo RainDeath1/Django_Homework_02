@@ -2,11 +2,23 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Race(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Раса')
+    allowed_weight = models.PositiveIntegerField(verbose_name='Допустимый вес')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Раса"
+        verbose_name_plural = "Расы"
+
+
 class Character(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     name = models.CharField(max_length=100, verbose_name='Имя')
     character_class = models.CharField(max_length=50, verbose_name='Класс персонажа')
-    race = models.CharField(max_length=50, verbose_name='Раса')
+    race = models.ForeignKey(Race, on_delete=models.CASCADE, verbose_name='Раса')
     level = models.PositiveIntegerField(default=1, verbose_name='Уровень')
     image = models.ImageField(upload_to='character_images/', blank=True, null=True, verbose_name='Изображение')
 
@@ -70,7 +82,7 @@ class Armor(Item):
         ('SHIELD', 'Щит'),
     )
 
-    armor_type = models.CharField(max_length=50, choices=ARMOR_CHOICES, default='MEDIUM', verbose_name="Тип доспеха")
+    armor_type = models.CharField(max_length=50, choices=ARMOR_CHOICES, default='LIGHT', verbose_name="Тип доспеха")
     defense = models.PositiveIntegerField(blank=True, null=True, verbose_name="Защита")
     material = models.CharField(max_length=50, blank=True, null=True, verbose_name="Материал")
     weight = models.FloatField(blank=True, null=True, verbose_name="Вес")
@@ -99,4 +111,7 @@ class Currency(models.Model):
 
     def __str__(self):
         return f"{self.amount} {self.name} у {self.character.name}"
+
+
+
 
