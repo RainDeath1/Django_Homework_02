@@ -1,0 +1,58 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Профиль пользователя с аватаром и именем -->
+            <div class="text-center mb-3 profile-header">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="Аватар пользователя" class="profile-avatar">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.png' %}" alt="Стандартный аватар" class="profile-avatar">
+                {% endif %}
+                <h2 class="profile-name">{{ user.username }}</h2>
+            </div>
+            <!-- Навигация по профилю -->
+            <div class="profile-nav">
+                <a href="{% url 'dnd:create' %}" class="list-group-item">Персонажи</a>
+                <a href="#" class="list-group-item">Предметы</a>
+                <a href="#" class="list-group-item">Настройки</a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <p>{{ user.profile.bio }}</p>
+            <!-- Секция для отображения персонажей -->
+            {% if user.characters.all %}
+            <div class="row">
+                {% for character in user.characters.all %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        {% if character.image %}
+                            <img src="{{ character.image.url }}" alt="{{ character.name }}" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ character.name }}</h5>
+                            <p class="card-text">Класс: {{ character.character_class }}</p>
+                            <p class="card-text">Раса: {{ character.race }}</p>
+                            <a href="#" class="btn btn-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>Вы пока не создавали ни одного персонажа.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block to_be_continued %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+{% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+{% endif %}
+
+<form method="post" action="{% url 'dnd:login' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_username">Имя пользователя</label>
+        <input type="text" id="id_username" name="username" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="id_password">Пароль</label>
+        <input type="password" id="id_password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Войти</button>
+</form>
+{% block to_be_continued %}
+{% endblock %}
+{% endblock %}

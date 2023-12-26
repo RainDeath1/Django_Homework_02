@@ -1,0 +1,74 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Регистрация - DnD App{% endblock %}
+
+{% block content %}
+<div class="container mt-5 registration-form-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Регистрация</h2>
+            <form method="post" action="{% url 'dnd:user_register' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.bio.label_tag }}
+                    {{ form.bio }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.avatar.label_tag }}
+                    {{ form.avatar }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.favorite_race.label_tag }}
+                    {{ form.favorite_race }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.favorite_class.label_tag }}
+                    {{ form.favorite_class }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.experience_level.label_tag }}
+                    {{ form.experience_level }}
+                </div>
+
+                <div class="form-check">
+                    {{ form.is_dm }}
+                    <label class="form-check-label" for="{{ form.is_dm.id_for_label }}">
+                        {{ form.is_dm.label }}
+                    </label>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% block to_be_continued %}
+{% endblock %}
+{% endblock %}
+
